@@ -41,8 +41,14 @@ public class Server extends Thread {
 		}
 	}
 	
-	// 4. 클라이언트 접속 대기
+	// 5. 관리자(서버) 메시지 전송
 	public void sendAdminMsg(String msg) {
+		String str = "관리자 : " + msg;
+		chatAdmin.send(serverSocket.getInetAddress().getHostAddress(), str);
+	}
+	
+	// 4. 클라이언트 접속 대기
+	public void run() {
 		while(true) {
 			try {
 				// 클라이언트 요청을 받아들인다
@@ -56,7 +62,7 @@ public class Server extends Thread {
 	}
 	
 	// 내부 클래스 : 클라이언트 객체
-	// 5. Server 스레드에 의해 실행된 Clients 스레드
+	// 6. Server 스레드에 의해 실행된 Clients 스레드
 	class Clients extends Thread {
 		private Socket socket;
 		private BufferedReader br;	//입력
@@ -101,8 +107,8 @@ public class Server extends Thread {
 				// 클라이언트 메시지 읽기
 				while((msg = br.readLine()) != null) {	//입력이 비어있지 않다면 실행
 					// 모든 클라이언트들에게 메시지 전송
-					clients.remove(socket);
-					socket = null;
+					msg = "(" + ip + ") : " + msg; 
+					send(ip, msg);
 				}
 			} catch (IOException e) {
 				// 클라이언트 제거
