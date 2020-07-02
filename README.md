@@ -14,4 +14,25 @@ socket을 이용한 채팅 프로그램
 ## 기능 구현 목표
 
 - [ ] 접속자 구분하여 표시
-- [ ] 채팅 내용 Oracle DB저장
+- [x] 채팅 내용 Oracle DB저장
+
+## SQL
+```sql
+-- 1. 시스템 관리자 로그인
+conn sys/sys12345 as sysdba;
+
+-- 2. 유저 생성
+create user chatting identified by chatting;
+
+-- 3. 유저 권한 부여
+grant connect, dba, resource to chatting;
+
+-- 4. 유저 로그인
+conn chatting/chatting;
+
+-- 5. try02 테이블 생성
+CREATE TABLE try02(
+	ip number(30) NOT NULL,
+	chat varchar(100) NOT NULL
+);
+```
